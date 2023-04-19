@@ -1,0 +1,13 @@
+label{
+    display: inline-flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+label p{
+    color: slategray;
+}
+.err-msg{
+    height: 11px;
+}
