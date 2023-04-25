@@ -13,7 +13,7 @@ const InputForm = (props) => {
     const [isError, setIsError] = useState({})
     const [notFilled, setNotFilled] = useState(false)
     const working = useRef(false)
-    let disabledRef = useRef(true)
+    // let disabledRef = useRef(true) //obsolete
     let timer = useRef({});
     const debounce = (func, timeout = 750) => {
         return (...args) => {
@@ -75,41 +75,45 @@ const InputForm = (props) => {
             if(!working.current){
                 let disabled = Object.values(requiredFields).some(field => field === '')
                 if(disabled){
-                    setNotFilled(true)
+                    setNotFilled(requiredFields)
                     setTimeout(() => setNotFilled(false), 1000)
                 }
                 let isErrorDisabled = Object.values(isError).some(field => field.length > 0)
-                disabledRef.current = disabled || isErrorDisabled
-                if(disabledRef.current) return
+                // disabledRef.current = disabled || isErrorDisabled
+                if(disabled || isErrorDisabled) return
                 //do something with the values
                 console.log(JSON.stringify(formValues.current, null, 2))
                 clearInputs(e)
                 setIsError({});
             }
     }
+    let i = 0;
     return (
         <form autoComplete='new-password' onSubmit={handleSubmit}>
             {inputs.map((e,index) => {
+                console.log(inputs)
                         return(
                             <FormInput key={index}
                                        label={e.label ?? e.name}
                                        name={e.name}
-                                       className={notFilled ? 'not-filled' : ''}
+                                        {...(notFilled[e.name.toLowerCase()] === '' && {className:'not-filled'})}
                                        onChange={handleInputChange}
                                        inputType={e.type}
                                        onBlur={handleInputBlur}
                                        validator={isError}
-                                       isEmail={e.isEmail ?? false}
-                                       isString={e.isString ?? false}
-                                       isNumber={e.isNumber ?? false}
-                                       isPassword={e.isPassword ?? false}
-                                       isRequired={e.isRequired}
-                                       length={e.length}
-                                       values={e.values ?? null}
+                                       {...(e.isEmail && { isEmail: true })}
+                                       {...(e.isString && { isString: true })}
+                                       {...(e.isNumber && { isNumber: true })}
+                                       {...(e.isPassword && { isPassword: true })}
+                                       {...(e.isRequired !== undefined && { isRequired: e.isRequired })}
+                                       {...(e.length && { length: e.length })}
+                                       {...(e.values && { values: e.values })}
+                                       {...(e.primary && {primary: e.primary})}
+                                       {...(e.secondary && {secondary: e.secondary})}
                             />
                             //              ^
                             //          fix |
-                            //              | swap to props.children
+                            //              | swap to props.children ??
                         )
             })}
             <input disabled={working.current} className="submit" type="submit" value={props.message} />

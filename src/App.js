@@ -11,12 +11,12 @@ function App() {
         <div className="App">
         <InputForm
             inputs = {[
-                {name: 'Name', type: 'name', isRequired: true, isString: true,
-                    length: ([6,20])},
-                {name: 'Email', type: 'email', isRequired: false, isString: true,
-                    isEmail: true, msg: ErrorMessages.invalidVal},
-                {name: 'Surname', type: 'name', isRequired: true, isString: true,
-                    length: ([3,25])},
+                {name: 'Name', type: 'name', isRequired: true,
+                    isString: true, length: ([6,20])},
+                {name: 'Email', type: 'email', isRequired: false,
+                    isString: true, isEmail: true, msg: ErrorMessages.invalidVal},
+                {name: 'Surname', type: 'name', isRequired: true,
+                    isString: true, length: ([3,25])},
                 {name: 'Password', type: 'password', isRequired: true,
                     length: ([6,20]), isPassword: true},
                 {name: 'LastField', type: 'name', label: 'Last Field',
